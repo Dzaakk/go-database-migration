@@ -4,7 +4,6 @@ import (
 	"Dzaakk/go-restful-api/helper"
 	"Dzaakk/go-restful-api/model/web"
 	"Dzaakk/go-restful-api/service"
-	"encoding/json"
 	"net/http"
 	"strconv"
 
@@ -25,11 +24,7 @@ func (controller *CategoryControllerImpl) Create(writer http.ResponseWriter, req
 		Status: "OK",
 		Data:   categoryResponse,
 	}
-
-	writer.Header().Add("Content-Type", "application/json")
-	encoder := json.NewEncoder(writer)
-	err = encoder.Encode(webResponse)
-	helper.PanicIfError(err)
+	helper.WriteToResponseBody(writer, webResponse)
 }
 
 func (controller *CategoryControllerImpl) Update(writer http.ResponseWriter, request *http.Request, params httprouter.Params) {
