@@ -202,7 +202,6 @@ func TestGetCategorySuccess(t *testing.T) {
 	assert.Equal(t, "OK", responseBody["status"])
 	assert.Equal(t, category.Id, int(responseBody["data"].(map[string]interface{})["id"].(float64)))
 	assert.Equal(t, category.Name, responseBody["data"].(map[string]interface{})["name"])
-
 }
 
 func TestGetCategoryFailed(t *testing.T) {
