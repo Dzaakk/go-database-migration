@@ -3,6 +3,7 @@ package main
 import (
 	"Dzaakk/go-restful-api/app"
 	"Dzaakk/go-restful-api/controller"
+	"Dzaakk/go-restful-api/exception"
 	"Dzaakk/go-restful-api/helper"
 	"Dzaakk/go-restful-api/repository"
 	"Dzaakk/go-restful-api/service"
@@ -30,10 +31,13 @@ func main() {
 	router.PUT("/api/categories/:categoriesId", categoryController.Update)
 	router.DELETE("/api/categories/:categoriesId", categoryController.Delete)
 
+	router.PanicHandler = exception.ErrorHandler
+
 	server := http.Server{
 		Addr:    "localhost:3000",
 		Handler: router,
 	}
 	err := server.ListenAndServe()
 	helper.PanicIfError(err)
+	
 }

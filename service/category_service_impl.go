@@ -1,6 +1,7 @@
 package service
 
 import (
+	"Dzaakk/go-restful-api/exception"
 	"Dzaakk/go-restful-api/helper"
 	"Dzaakk/go-restful-api/model/domain"
 	"Dzaakk/go-restful-api/model/web"
@@ -50,8 +51,9 @@ func (service *CategoryServiceImpl) Update(c context.Context, request web.Catego
 	defer helper.CommitOrRollback(tx)
 
 	category, err := service.CategoryRepository.FindById(c, tx, request.Id)
-	helper.PanicIfError(err)
-
+	if err != nil {
+		panic(exception.NewNotFoundError(err.Error()))
+	}
 	category.Name = request.Name
 
 	category = service.CategoryRepository.Update(c, tx, category)
@@ -64,7 +66,9 @@ func (service *CategoryServiceImpl) Delete(c context.Context, categoryId int) {
 	defer helper.CommitOrRollback(tx)
 
 	category, err := service.CategoryRepository.FindById(c, tx, categoryId)
-	helper.PanicIfError(err)
+	if err != nil {
+		panic(exception.NewNotFoundError(err.Error()))
+	}
 
 	service.CategoryRepository.Delete(c, tx, category)
 }
@@ -75,7 +79,9 @@ func (service *CategoryServiceImpl) FindById(c context.Context, categoryId int) 
 	defer helper.CommitOrRollback(tx)
 
 	category, err := service.CategoryRepository.FindById(c, tx, categoryId)
-	helper.PanicIfError(err)
+	if err != nil {
+		panic(exception.NewNotFoundError(err.Error()))
+	}
 
 	return helper.ToCategoryResponse(category)
 }
