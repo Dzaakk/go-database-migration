@@ -5,6 +5,7 @@ import (
 	"Dzaakk/go-restful-api/controller"
 	"Dzaakk/go-restful-api/exception"
 	"Dzaakk/go-restful-api/helper"
+	"Dzaakk/go-restful-api/middleware"
 	"Dzaakk/go-restful-api/repository"
 	"Dzaakk/go-restful-api/service"
 	"net/http"
@@ -35,9 +36,9 @@ func main() {
 
 	server := http.Server{
 		Addr:    "localhost:3000",
-		Handler: router,
+		Handler: middleware.NewAuthMiddleware(router),
 	}
 	err := server.ListenAndServe()
 	helper.PanicIfError(err)
-	
+
 }
