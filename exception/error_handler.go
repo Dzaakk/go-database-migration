@@ -5,7 +5,7 @@ import (
 	"Dzaakk/go-restful-api/model/web"
 	"net/http"
 
-	"github.com/go-playground/validator"
+	"github.com/go-playground/validator/v10"
 )
 
 func ErrorHandler(writer http.ResponseWriter, request *http.Request, err interface{}) {
@@ -18,6 +18,26 @@ func ErrorHandler(writer http.ResponseWriter, request *http.Request, err interfa
 	}
 
 	internalServerError(writer, request, err)
+}
+
+func validationErrors(writer http.ResponseWriter, request *http.Request, err interface{}) bool {
+	exception, ok := err.(validator.ValidationErrors)
+	if ok {
+		writer.Header().Set("Content-Type", "application/json")
+		writer.WriteHeader(http.StatusBadRequest)
+
+		webResponse := web.WebResponse{
+			Code:   http.StatusBadRequest,
+			Status: "BAD REQUEST",
+			Data:   exception.Error(),
+		}
+
+		helper.WriteToResponseBody(writer, webResponse)
+		return true
+
+	} else {
+		return false
+	}
 }
 
 func notFoundError(writer http.ResponseWriter, request *http.Request, err interface{}) bool {
@@ -39,26 +59,6 @@ func notFoundError(writer http.ResponseWriter, request *http.Request, err interf
 		return false
 	}
 
-}
-
-func validationErrors(writer http.ResponseWriter, request *http.Request, err interface{}) bool {
-	exception, ok := err.(validator.ValidationErrors)
-	if ok {
-		writer.Header().Set("Content-Type", "application/json")
-		writer.WriteHeader(http.StatusBadRequest)
-
-		webResponse := web.WebResponse{
-			Code:   http.StatusBadRequest,
-			Status: "BAD REQUEST",
-			Data:   exception.Error(),
-		}
-
-		helper.WriteToResponseBody(writer, webResponse)
-		return true
-
-	} else {
-		return false
-	}
 }
 
 func internalServerError(writer http.ResponseWriter, request *http.Request, err interface{}) {
