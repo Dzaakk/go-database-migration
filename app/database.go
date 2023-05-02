@@ -16,6 +16,10 @@ func NewDB() *sql.DB {
 	db.SetConnMaxIdleTime(10 * time.Minute)
 
 	return db
-
+	// migrate create -ext sql -dir db/migrations create_table_first
+	// migrate create -ext sql -dir db/migrations create_table_second
+	// migrate create -ext sql -dir db/migrations create_table_third
+	// migrate -database "mysql://root:kozato321@tcp(localhost:3306)/go_database_migration" -path db/migrations up  
+	// migrate -database "mysql://root:kozato321@tcp(localhost:3306)/go_database_migration" -path db/migrations down 
 }
 
