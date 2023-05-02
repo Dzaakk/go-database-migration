@@ -19,7 +19,10 @@ func NewDB() *sql.DB {
 	// migrate create -ext sql -dir db/migrations create_table_first
 	// migrate create -ext sql -dir db/migrations create_table_second
 	// migrate create -ext sql -dir db/migrations create_table_third
+	// migrate create -ext sql -dir db/migrations sample_dirty_state
 	// migrate -database "mysql://root:kozato321@tcp(localhost:3306)/go_database_migration" -path db/migrations up  
 	// migrate -database "mysql://root:kozato321@tcp(localhost:3306)/go_database_migration" -path db/migrations down 
+	// migrate -database "mysql://root:kozato321@tcp(localhost:3306)/go_database_migration" -path db/migrations version 
+	// migrate -database "mysql://root:kozato321@tcp(localhost:3306)/go_database_migration" -path db/migrations force 20230502110310 
 }
 
